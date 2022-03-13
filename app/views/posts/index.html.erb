@@ -1,0 +1,46 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Posts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Content</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.content %></td>
+        <td><%= post.user_id %></td>
+        <td><%= link_to 'Show', post %></td>
+        <td><%= link_to 'Edit', edit_post_path(post) %></td>
+        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<!--vue-->
+<!-- ここでエントリポイントとなるファイルを指定
+     development環境(default設定)では自動的にjsの変更を検知し、webpackでコンパイルされる -->
+<%= javascript_pack_tag 'index' %>
+
+<div id="like">
+  <% @posts.each do |post| %>
+    <li>
+      <%= post.content %>
+      <p>
+        <% if user_signed_in? %>
+          <like-button :user-id="<%= current_user.id %>" :post-id="<%= post.id %>"></like-button>
+        <% end %>
+      </p>
+    </li>
+  <% end %>
+</div>
+
+<%= link_to 'New Post', new_post_path %>
